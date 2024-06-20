@@ -36,11 +36,21 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(compose.runtime)
-            implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            // Precompose
+            api(compose.foundation)
+            api(compose.animation)
+            api("moe.tlaster:precompose:1.5.10")
+            // api("moe.tlaster:precompose-molecule:$precompose_version") // For Molecule intergration
+            api("moe.tlaster:precompose-viewmodel:1.5.10") // For ViewModel intergration
+            // api("moe.tlaster:precompose-koin:$precompose_version") // For Koin intergration
+            api(compose.materialIconsExtended)
+        }
+        iosMain.dependencies {
+            // ios dependencies
         }
     }
 }
