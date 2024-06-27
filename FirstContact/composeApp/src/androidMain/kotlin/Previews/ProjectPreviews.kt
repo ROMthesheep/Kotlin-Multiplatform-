@@ -3,8 +3,10 @@ package Previews
 import Data.ExpenseManager
 import Model.Expense
 import Model.ExpenseCategory
+import Presentacion.ExpensesUIState
 import UI.AllExpensesHeader
 import UI.ExpensesItem
+import UI.ExpensesScreen
 import UI.ExpensesTotalHeader
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -35,4 +37,11 @@ private fun ExpenseItemPreview() {
     Box(modifier = Modifier.padding(8.dp)) {
         ExpensesItem(expense = ExpenseManager.fakeExpenseList.first(), onExpenseClick = {})
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun ExpensesScreenPreview() {
+    ExpensesScreen(uiState = ExpensesUIState(expenses = ExpenseManager.fakeExpenseList, total = 13.1), onExpenseClick = {})
 }
