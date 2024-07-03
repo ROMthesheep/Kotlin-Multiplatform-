@@ -12,17 +12,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import getColorsTheme
 import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
+import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.viewmodel.viewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun Navigation(modifier: Modifier = Modifier, navigator: Navigator) {
     val colors = getColorsTheme()
-    val viewModel = viewModel(modelClass = ExpensesViewModel::class) {
-        ExpensesViewModel(ExpenseRepositoryImpl(ExpenseManager))
-    }
+    val viewModel = koinViewModel(ExpensesViewModel::class) { parametersOf() }
 
     NavHost(
         modifier = modifier.background(colors.backgroundColor),
@@ -40,7 +40,7 @@ fun Navigation(modifier: Modifier = Modifier, navigator: Navigator) {
             val _idFromPath = backStack.path<Long>("id")
             val isAddExpense = _idFromPath?.let { id -> viewModel.getExpenseWithID(id) }
 
-            ExpensesDetailScreen(expenseToEdit = isAddExpense) { expense ->
+            ExpensesDetailScreen(expenseToEdit = isAddExpense, categoriesList = viewModel.getCategories()) { expense ->
                 if (isAddExpense == null) {
                     viewModel.addExpense(expense)
                 } else {
