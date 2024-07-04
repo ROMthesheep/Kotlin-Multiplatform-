@@ -1,4 +1,4 @@
-package Data
+package data
 
 import Model.Expense
 import Model.ExpenseCategory

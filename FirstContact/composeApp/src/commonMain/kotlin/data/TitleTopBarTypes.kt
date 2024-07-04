@@ -1,4 +1,4 @@
-package Data
+package data
 
 enum class TitleTopBarTypes(val value: String) {
     DASHBOARD(value = "Dashboard"),

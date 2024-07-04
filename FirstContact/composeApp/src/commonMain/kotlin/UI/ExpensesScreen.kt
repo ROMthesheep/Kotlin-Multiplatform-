@@ -1,6 +1,5 @@
 package UI
 
-import Data.ExpenseManager
 import Model.Expense
 import Presentacion.ExpensesUIState
 import androidx.compose.foundation.ExperimentalFoundationApi

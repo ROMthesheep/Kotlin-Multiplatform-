@@ -1,15 +1,14 @@
 package dependencyInjection
 
-import Data.ExpenseManager
-import Data.ExpenseRepositoryImpl
+import data.ExpenseRepositoryImpl
 import Domain.ExpenseRepository
 import Presentacion.ExpensesViewModel
+import com.expenseApp.db.Database
 import org.koin.core.module.dsl.createdAtStart
 import org.koin.core.module.dsl.withOptions
 import org.koin.dsl.module
 
-fun appModule() = module {
-    single { ExpenseManager }.withOptions { createdAtStart() }
-    single<ExpenseRepository> { ExpenseRepositoryImpl(get()) }
+fun appModule(appDatabase: Database) = module {
+    single<ExpenseRepository> { ExpenseRepositoryImpl(appDatabase) }
     factory { ExpensesViewModel(get()) }
 }
