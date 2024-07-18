@@ -50,6 +50,8 @@ kotlin {
 
             // SQLDELIGHT
             implementation("app.cash.sqldelight:android-driver:2.0.2")
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -70,11 +72,18 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             api(libs.precompose.koin)
+
+            implementation(libs.ktor.client.core)
+            implementation(libs.kotlinx.coroutines.core)
+
+            implementation(libs.ktor.content.negotiation)
+            implementation(libs.ktor.content.serialization)
         }
         iosMain.dependencies {
             // ios dependencies
             implementation("app.cash.sqldelight:native-driver:2.0.2")
             implementation("co.touchlab:stately-common:2.0.5")
+            implementation(libs.ktor.client.darwin)
         }
 
         commonTest.dependencies {

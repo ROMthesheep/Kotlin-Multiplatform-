@@ -1,6 +1,6 @@
 package Presentacion
 
-import Domain.ExpenseRepository
+import  Domain.ExpenseRepository
 import Model.Expense
 import Model.ExpenseCategory
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,55 +10,75 @@ import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
-data class ExpensesUIState(
-    val expenses: List<Expense> = emptyList(),
-    val total: Double = 0.0
-)
+sealed class ExpensesUIState {
+    object  Loading: ExpensesUIState()
+    data class Success(val expenses: List<Expense>, val total: Double): ExpensesUIState()
+    data class Error(val msg: String): ExpensesUIState()
+}
 
 class ExpensesViewModel(private val repo: ExpenseRepository): ViewModel() {
-    private val _uiState = MutableStateFlow(ExpensesUIState())
+    private val _uiState = MutableStateFlow<ExpensesUIState>(ExpensesUIState.Loading)
     val uiState = _uiState.asStateFlow()
-    private var allExpense = repo.getAllExpenses()
 
     init {
-        getAllExpenses()
+        getExpenseList()
     }
 
-    private fun updateExpenseList() {
+    private fun getExpenseList() {
         viewModelScope.launch {
-            allExpense = repo.getAllExpenses().toMutableList()
-            updateState()
+            try {
+                val expenses = repo.getAllExpenses()
+                _uiState.value = ExpensesUIState.Success(expenses, expenses.sumOf { it.amount })
+            } catch (e: Exception) {
+                _uiState.value = ExpensesUIState.Error(e.message ?: "Cagaste")
+            }
         }
     }
 
-    private fun getAllExpenses() {
-        repo.getAllExpenses()
-        updateExpenseList()
+    private suspend fun updateExpenseList() {
+        try {
+            val expenses = repo.getAllExpenses()
+            _uiState.value = ExpensesUIState.Success(expenses, expenses.sumOf { it.amount })
+        } catch (e: Exception) {
+            _uiState.value = ExpensesUIState.Error(e.message ?: "Cagaste")
+        }
     }
 
     fun addExpense(expense: Expense) {
-        repo.addExpense(expense)
-        updateExpenseList()
-    }
-
-    fun editExpense(expense: Expense) {
-        repo.editExpense(expense)
-        updateExpenseList()
-    }
-
-    fun deleteExpense(expense: Expense) {
-        repo.delete(expense)
-        updateExpenseList()
-    }
-
-    private fun updateState() {
-        _uiState.update { state ->
-            state.copy(expenses = allExpense, total = allExpense.sumOf { it.amount })
+        viewModelScope.launch {
+            try {
+                repo.addExpense(expense)
+                updateExpenseList()
+            } catch (e: Exception) {
+                _uiState.value = ExpensesUIState.Error(e.message ?: "Cagaste")
+            }
         }
     }
 
-    fun getExpenseWithID(id: Long): Expense {
-        return allExpense.first { it.id == id}
+    fun editExpense(expense: Expense) {
+        viewModelScope.launch {
+            try {
+                repo.editExpense(expense)
+                updateExpenseList()
+            } catch (e: Exception) {
+                _uiState.value = ExpensesUIState.Error(e.message ?: "Cagaste")
+            }
+        }
+    }
+
+    fun deleteExpense(expense: Expense) {
+        viewModelScope.launch {
+            try {
+                repo.delete(expense)
+                updateExpenseList()
+            } catch (e: Exception) {
+                _uiState.value = ExpensesUIState.Error(e.message ?: "Cagaste")
+            }
+        }
+    }
+
+    fun getExpenseWithID(id: Long): Expense? {
+        return (_uiState.value as? ExpensesUIState.Success)?.expenses?.firstOrNull { it.id == id}
     }
 
     fun getCategories(): List<ExpenseCategory> {
