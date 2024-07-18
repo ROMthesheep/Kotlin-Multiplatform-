@@ -35,6 +35,7 @@ struct AboutView: View {
         ]
         return result
       }()
+    
     var body: some View {
         List {
             ForEach(items, id: \.self) { item in
