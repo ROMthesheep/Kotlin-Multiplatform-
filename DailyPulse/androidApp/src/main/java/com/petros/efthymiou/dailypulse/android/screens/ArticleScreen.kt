@@ -30,8 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.petros.efthymiou.dailypulse.Articles.Article
-import com.petros.efthymiou.dailypulse.Articles.ArticlesViewModel
+import com.petros.efthymiou.dailypulse.articles.Article
+import com.petros.efthymiou.dailypulse.articles.ArticlesViewModel
 
 @Composable
 fun ArticleScreen(
@@ -94,7 +94,7 @@ fun ArticleItemView(article: Article) {
             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 22.sp)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = article.description)
+        Text(text = article.desc)
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = article.date,

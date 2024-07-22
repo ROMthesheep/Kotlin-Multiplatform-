@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.petros.efthymiou.dailypulse.Articles.ArticlesViewModel
+import com.petros.efthymiou.dailypulse.articles.ArticlesViewModel
 import com.petros.efthymiou.dailypulse.android.screens.AboutScreen
 import com.petros.efthymiou.dailypulse.android.screens.Screens
 import com.petros.efthymiou.dailypulse.android.screens.ArticleScreen

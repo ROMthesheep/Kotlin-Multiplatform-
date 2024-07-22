@@ -1,4 +1,4 @@
-package com.petros.efthymiou.dailypulse.Articles
+package com.petros.efthymiou.dailypulse.articles
 
 data class ArticlesState(
     val articles: List<Article> = listOf(),

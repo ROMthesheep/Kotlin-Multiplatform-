@@ -1,8 +1,8 @@
-package com.petros.efthymiou.dailypulse.Articles
+package com.petros.efthymiou.dailypulse.articles
 
 data class Article(
     val title: String,
-    val description: String,
+    val desc: String,
     val date: String,
     val imgURL: String
 )
